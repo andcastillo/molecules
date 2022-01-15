@@ -1,0 +1,11 @@
+## Output format
+- xrn
+- rn
+- CALC.TPSA
+- CALC.ROTBND
+- CALC.HDONOR
+- CALC.VEBER
+- CALC.LOGP
+- CALC.HACCOR
+- CALC.LIPINSKI
+- Recalculated HDONOR
