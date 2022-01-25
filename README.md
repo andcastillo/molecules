@@ -12,8 +12,10 @@
 
 ## Install
 
+```
 mvn install
 mvn package
+```
 
 ## Run 
 
