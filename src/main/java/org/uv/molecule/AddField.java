@@ -13,19 +13,30 @@ import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.qsar.descriptors.molecular.HBondDonorCountDescriptor;
 import org.json.*;
+
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class AddField {
 
 
-    public static void main(String[] args) throws CDKException {
+
+    public static void main(String[] args) throws IOException {
         JSONArray results = null;
         try {
             //Path fileName = Path.of("/Users/acastillo/Documents/969616.xml");
-            Path fileName = Path.of(args[0]);
-            String xml = Files.readString(fileName);
+            String xml = null;
+            try {
+                xml = new String(Files.readAllBytes(Paths.get(args[0])));
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return;
+            }
+
             JSONObject json = XML.toJSONObject(xml);
             results = json.getJSONArray("xf");//.getJSONObject("substances").getJSONArray("substance");
 
