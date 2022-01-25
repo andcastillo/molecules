@@ -61,12 +61,12 @@ public class AddField {
                         if (row.getJSONObject("IDE").has("IDE.RN"))
                             rn = row.getJSONObject("IDE").optString("IDE.RN", "ND");
                         String molFile = "\n" + substance.getString("content");
-                        MDLV3000Reader mdl = new MDLV3000Reader( new ByteArrayInputStream(molFile.getBytes()));
                         try {
+                            MDLV3000Reader mdl = new MDLV3000Reader( new ByteArrayInputStream(molFile.getBytes()));
                             IAtomContainer container = mdl.read(new org.openscience.cdk.AtomContainer(0, 0, 0, 0));
                             HBondAcceptorCountDescriptor calculator = new HBondAcceptorCountDescriptor();
                             org.openscience.cdk.qsar.DescriptorValue value = calculator.calculate(container);
-                            String output = xrn + " " + rn + " ";
+                            String output = xrn + "\t\"" + rn + "\"\t";
                             output += row.getJSONObject("IDE").getInt("IDE.MW") + "\t";
                             output += calc.getFloat("CALC.LOGP") + "\t";
                             output += calc.getFloat("CALC.HDONOR") + "\t";
