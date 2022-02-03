@@ -4,9 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.io.DefaultChemObjectReader;
+import org.openscience.cdk.io.MDLV2000Reader;
 import org.openscience.cdk.io.MDLV3000Reader;
 import org.openscience.cdk.qsar.descriptors.molecular.HBondAcceptorCountDescriptor;
-import org.openscience.cdk.qsar.descriptors.molecular.HBondDonorCountDescriptor;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -60,9 +61,16 @@ public class AddField {
                         String rn = "ND";
                         if (row.getJSONObject("IDE").has("IDE.RN"))
                             rn = row.getJSONObject("IDE").optString("IDE.RN", "ND");
-                        String molFile = "\n" + substance.getString("content");
+                        String molFile = substance.getString("content");
                         try {
-                            MDLV3000Reader mdl = new MDLV3000Reader( new ByteArrayInputStream(molFile.getBytes()));
+                            DefaultChemObjectReader mdl;
+                            if (molFile.contains("V2000")) {
+                                mdl = new MDLV2000Reader(new ByteArrayInputStream(molFile.getBytes()));
+                            }
+                            else {
+                                mdl = new MDLV3000Reader( new ByteArrayInputStream(( "\n" + molFile).getBytes()));
+                            }
+
                             IAtomContainer container = mdl.read(new org.openscience.cdk.AtomContainer(0, 0, 0, 0));
                             HBondAcceptorCountDescriptor calculator = new HBondAcceptorCountDescriptor();
                             org.openscience.cdk.qsar.DescriptorValue value = calculator.calculate(container);
